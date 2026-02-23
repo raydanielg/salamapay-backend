@@ -22,6 +22,18 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(Request $request): View|RedirectResponse
     {
+        // Handle auth page key verification if required
+        $key = env('AUTH_PAGE_KEY');
+        if (is_string($key) && $key !== '') {
+            if ($request->has('key') && $request->get('key') === $key) {
+                $request->session()->put('auth_page_key_verified', true);
+            }
+
+            if (!$request->session()->get('auth_page_key_verified')) {
+                return redirect('/');
+            }
+        }
+
         if (!config('tyro-login.registration.enabled', true)) {
             return redirect()->route('tyro-login.login');
         }

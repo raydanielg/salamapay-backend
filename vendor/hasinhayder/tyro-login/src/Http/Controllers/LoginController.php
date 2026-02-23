@@ -21,6 +21,19 @@ class LoginController extends Controller {
      * Show the login form.
      */
     public function showLoginForm(Request $request): View|RedirectResponse {
+        // Handle auth page key verification if required
+        $key = env('AUTH_PAGE_KEY');
+        if (is_string($key) && $key !== '') {
+            if ($request->has('key') && $request->get('key') === $key) {
+                $request->session()->put('auth_page_key_verified', true);
+            }
+
+            if (!$request->session()->get('auth_page_key_verified')) {
+                // If no key and not verified, redirect to root which should handle the key logic
+                return redirect('/');
+            }
+        }
+
         // Check if user is locked out
         if ($this->isLockedOut($request)) {
             return redirect()->route('tyro-login.lockout');

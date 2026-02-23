@@ -16,3 +16,12 @@ Route::get('/', function () {
 
     return redirect($url);
 });
+
+// Redirect default auth routes to tyro-login routes
+Route::get('/login', function () {
+    return redirect()->route('tyro-login.login');
+});
+
+Route::get('/register', function () {
+    return redirect()->route('tyro-login.register');
+});

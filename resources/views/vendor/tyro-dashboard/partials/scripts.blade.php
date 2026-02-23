@@ -39,6 +39,37 @@
         overlay.classList.toggle('active');
     }
 
+    // Sidebar dropdowns (Flowbite-style)
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById(id);
+        if (!dropdown) {
+            return;
+        }
+
+        const btn = document.querySelector(`[data-dropdown-target="${id}"]`);
+
+        // Close other dropdowns (accordion behavior)
+        document.querySelectorAll('.sidebar-dropdown-list.show').forEach((openList) => {
+            if (openList.id === id) {
+                return;
+            }
+            openList.classList.remove('show');
+            const otherBtn = document.querySelector(`[data-dropdown-target="${openList.id}"]`);
+            if (otherBtn) {
+                otherBtn.classList.remove('open');
+                otherBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        const willOpen = !dropdown.classList.contains('show');
+        dropdown.classList.toggle('show');
+
+        if (btn) {
+            btn.classList.toggle('open', willOpen);
+            btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        }
+    }
+
     // Sidebar collapse/expand
     function toggleSidebarCollapse() {
         const sidebar = document.getElementById('sidebar');
