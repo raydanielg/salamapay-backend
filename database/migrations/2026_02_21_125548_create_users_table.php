@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('users')) {
+            return;
+        }
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -22,6 +26,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        // Intentionally left empty.
+        // This migration is a duplicate of Laravel's default users table migration;
+        // dropping the users table here could delete the primary application table.
     }
 };
