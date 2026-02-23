@@ -17,6 +17,12 @@
                     @endif
                 </div>
 
+                @if(session('success'))
+                <div class="alert alert-success" style="padding: 0.875rem 1rem; margin-bottom: 1.5rem; background-color: #d1fae5; border: 1px solid #6ee7b7; border-radius: 0.5rem; color: #065f46; font-size: 0.9375rem; text-align: center;">
+                    {{ session('success') }}
+                </div>
+                @endif
+
                 <div class="form-header">
                     <h2>Verify your account</h2>
                     <p>Enter the 6-digit code sent to your phone number.</p>
@@ -51,8 +57,15 @@
                 </form>
 
                 <div class="form-footer">
-                    <p>
+                    <p id="resend-container">
                         Didn't receive code? 
+                        <span id="countdown-timer" style="font-weight: 600; color: var(--primary);"></span>
+                        <a href="javascript:void(0)" id="resend-link" class="form-link" style="display: none;" onclick="document.getElementById('resend-form').submit();">Resend OTP</a>
+                    </p>
+                    <form id="resend-form" method="POST" action="{{ route('tyro-login.otp.resend') }}" style="display: none;">
+                        @csrf
+                    </form>
+                    <p style="margin-top: 1rem;">
                         <a href="{{ route('tyro-login.register') }}" class="form-link">Register again</a>
                     </p>
                 </div>
@@ -137,6 +150,30 @@
                 form.submit();
             }
         }
+
+        // Resend Timer Logic
+        const resendLink = document.getElementById('resend-link');
+        const countdownTimer = document.getElementById('countdown-timer');
+        let timeLeft = 60;
+
+        function startTimer() {
+            resendLink.style.display = 'none';
+            countdownTimer.style.display = 'inline';
+            
+            const timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    resendLink.style.display = 'inline';
+                    countdownTimer.style.display = 'none';
+                    timeLeft = 60;
+                } else {
+                    countdownTimer.textContent = `Wait ${timeLeft}s`;
+                }
+                timeLeft -= 1;
+            }, 1000);
+        }
+
+        startTimer();
     });
 </script>
 @endsection

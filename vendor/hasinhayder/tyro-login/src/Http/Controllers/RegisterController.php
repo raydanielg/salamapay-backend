@@ -430,4 +430,23 @@ class RegisterController extends Controller
         $errors = [];
         
         // Check if password contains the full email username
-        if (strlen($emailU
+        if (strlen($emailUsername) >= 3 && str_contains($password, $emailUsername)) {
+            $errors[] = 'password cannot contain your email username';
+        }
+        
+        // Check if password contains name parts
+        foreach ($nameParts as $namePart) {
+            if (strlen($namePart) >= 3 && str_contains($password, $namePart)) {
+                $errors[] = 'password cannot contain parts of your name';
+                break;
+            }
+        }
+        
+        // If any errors found, throw validation exception
+        if (!empty($errors)) {
+            throw ValidationException::withMessages([
+                'password' => 'For security reasons, your ' . implode(' and ', $errors) . '.',
+            ]);
+        }
+    }
+}

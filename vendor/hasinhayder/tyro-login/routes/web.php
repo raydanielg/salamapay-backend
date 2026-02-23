@@ -79,7 +79,7 @@ Route::middleware('guest')->group(function () {
     Route::post('otp/verify', [RegisterController::class, 'verifyOtp'])
         ->name('otp.submit');
 
-    Route::post('otp/resend', [LoginController::class, 'resendOtp'])
+    Route::post('otp/resend', [RegisterController::class, 'resendOtp'])
         ->name('otp.resend');
 
     Route::get('otp/cancel', [LoginController::class, 'cancelOtp'])
