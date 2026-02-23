@@ -55,6 +55,8 @@ Route::prefix('profile')->name('profile')->group(function () {
     Route::put('/password', [ProfileController::class, 'updatePassword'])->name('.password');
     Route::delete('/photo', [ProfileController::class, 'deletePhoto'])->name('.photo.delete');
     Route::delete('/2fa/reset', [ProfileController::class, 'reset2FA'])->name('.2fa.reset');
+    Route::post('/sessions/logout-all', [ProfileController::class, 'logoutAllSessions'])->name('.sessions.logout_all');
+    Route::delete('/sessions/{id}', [ProfileController::class, 'revokeSession'])->name('.sessions.revoke');
 });
 
 // Invitation/Referral System (all authenticated users)

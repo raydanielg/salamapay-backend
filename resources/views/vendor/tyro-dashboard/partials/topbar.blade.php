@@ -34,34 +34,69 @@
             </button>
 
             <div class="user-dropdown-menu">
-                <a href="{{ route('tyro-dashboard.profile') }}" class="dropdown-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    My Profile
-                </a>
-                <div class="dropdown-divider"></div>
-                @if(session('impersonator_id'))
-                    <form action="{{ route('tyro-dashboard.leave-impersonation') }}" method="POST" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="dropdown-item dropdown-item-danger" style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            Exit Impersonation
-                        </button>
-                    </form>
-                @else
-                    <form action="{{ route('tyro-login.logout') }}" method="POST" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="dropdown-item dropdown-item-danger" style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            Logout
-                        </button>
-                    </form>
-                @endif
+                <div class="dropdown-header" style="padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="user-avatar" style="width: 36px; height: 36px; {{ ((method_exists($user, 'hasProfilePhotoColumn') && $user->hasProfilePhotoColumn() && $user->profile_photo_path) || (method_exists($user, 'hasGravatarColumn') && $user->hasGravatarColumn() && $user->use_gravatar)) ? 'background: none; padding: 0;' : '' }}">
+                            @if((method_exists($user, 'hasProfilePhotoColumn') && $user->hasProfilePhotoColumn() && $user->profile_photo_path) || (method_exists($user, 'hasGravatarColumn') && $user->hasGravatarColumn() && $user->use_gravatar && $user->email))
+                                <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            @else
+                                {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
+                            @endif
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 0.875rem; font-weight: 600; color: #111827;">{{ $user->name }}</span>
+                            <span style="font-size: 0.75rem; color: #6b7280;">{{ $user->email }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 0.25rem;">
+                    <a href="{{ route('tyro-dashboard.profile') }}" class="dropdown-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Profile
+                    </a>
+                    
+                    <a href="#" class="dropdown-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M5.636 18.364l3.536-3.536m5.656 0l3.536 3.536M5.636 5.636l3.536 3.536m0 5.656l-3.536 3.536" />
+                            <circle cx="12" cy="12" r="8" />
+                        </svg>
+                        Support
+                    </a>
+                </div>
+
+                <div style="padding: 0.25rem; border-top: 1px solid #f3f4f6;">
+                    <button type="button" class="dropdown-item" onclick="toggleDarkMode()" style="width: 100%; border: none; background: none; display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s; cursor: pointer;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                        Dark Mode
+                    </button>
+
+                    @if(session('impersonator_id'))
+                        <form action="{{ route('tyro-dashboard.leave-impersonation') }}" method="POST" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="dropdown-item" style="width: 100%; border: none; background: none; display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s; cursor: pointer;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Exit Impersonation
+                            </button>
+                        </form>
+                    @else
+                        <form action="{{ route('tyro-login.logout') }}" method="POST" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="dropdown-item" style="width: 100%; border: none; background: none; display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s; cursor: pointer;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Log out
+                            </button>
+                        </form>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

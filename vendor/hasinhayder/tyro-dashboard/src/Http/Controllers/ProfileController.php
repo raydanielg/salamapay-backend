@@ -112,6 +112,32 @@ class ProfileController extends BaseController
     }
 
     /**
+     * Revoke a specific session.
+     */
+    public function revokeSession(Request $request, $id)
+    {
+        \DB::table('sessions')
+            ->where('id', $id)
+            ->where('user_id', $request->user()->id)
+            ->delete();
+
+        return back()->with('success', 'Session revoked successfully.');
+    }
+
+    /**
+     * Logout from all other sessions.
+     */
+    public function logoutAllSessions(Request $request)
+    {
+        \DB::table('sessions')
+            ->where('user_id', $request->user()->id)
+            ->where('id', '!=', $request->session()->getId())
+            ->delete();
+
+        return back()->with('success', 'All other sessions have been logged out.');
+    }
+
+    /**
      * Delete another user's profile photo (Admin).
      */
     public function deleteUserPhoto(Request $request, $id)

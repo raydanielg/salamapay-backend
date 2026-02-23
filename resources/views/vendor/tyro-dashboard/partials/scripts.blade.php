@@ -9,14 +9,24 @@
 
     function setTheme(theme) {
         localStorage.setItem('tyro-dashboard-theme', theme);
-        document.documentElement.classList.remove('light', 'dark');
-        document.documentElement.classList.add(theme);
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+        } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+        }
         updateThemeIcons(theme);
     }
 
-    function toggleTheme() {
+    function toggleDarkMode() {
         const currentTheme = getTheme();
-        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    }
+
+    function toggleTheme() {
+        toggleDarkMode();
     }
 
     function updateThemeIcons(theme) {
