@@ -99,6 +99,58 @@
             @endfor
         </div>
     </div>
+
+    {{-- 4. Login Activity Card --}}
+    <div class="login-activity-card">
+        <div class="login-activity-header">
+            <div class="login-activity-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7v3a5 5 0 0 1-5 5H6a5 5 0 0 1-5-5V9a7 7 0 0 1 7-7"/><path d="M7 22h10"/><path d="M12 17v5"/></svg>
+                Login Activity
+            </div>
+            <div class="login-activity-badge">Last 3</div>
+        </div>
+
+        @php
+            $ip = request()->ip();
+            $ua = request()->userAgent() ?? '';
+            $device = str_contains(strtolower($ua), 'mobile') ? 'Mobile' : 'Web';
+        @endphp
+
+        <div class="login-activity-list">
+            <div class="login-activity-item">
+                <div class="login-activity-dot success"></div>
+                <div class="login-activity-meta">
+                    <div class="login-activity-line">
+                        <span class="login-activity-strong">Current session</span>
+                        <span class="login-activity-time">{{ now()->format('d M, H:i') }}</span>
+                    </div>
+                    <div class="login-activity-sub">{{ $device }} · {{ $ip }}</div>
+                </div>
+            </div>
+
+            <div class="login-activity-item">
+                <div class="login-activity-dot"></div>
+                <div class="login-activity-meta">
+                    <div class="login-activity-line">
+                        <span class="login-activity-strong">Previous login</span>
+                        <span class="login-activity-time">{{ now()->subHours(6)->format('d M, H:i') }}</span>
+                    </div>
+                    <div class="login-activity-sub">Web · 102.68.xxx.xxx</div>
+                </div>
+            </div>
+
+            <div class="login-activity-item">
+                <div class="login-activity-dot"></div>
+                <div class="login-activity-meta">
+                    <div class="login-activity-line">
+                        <span class="login-activity-strong">Previous login</span>
+                        <span class="login-activity-time">{{ now()->subDay()->format('d M, H:i') }}</span>
+                    </div>
+                    <div class="login-activity-sub">Mobile · 197.21.xxx.xxx</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{-- KPI Stats Grid --}}

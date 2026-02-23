@@ -1130,6 +1130,10 @@
         align-items: center;
         justify-content: center;
         z-index: 10;
+        background: transparent;
+        border: none;
+        padding: 0;
+        line-height: 1;
     }
 
     .sp-balance-eye:hover {
@@ -1208,17 +1212,7 @@
         margin-top: 1.5rem;
     }
 
-    @media (max-width: 640px) {
-        .sp-virtual-card {
-            max-width: 100%;
-            height: auto;
-            min-height: 200px;
-        }
-        .sp-card-number {
-            font-size: 16px;
-            letter-spacing: 2px;
-        }
-    }
+    
 
     .user-avatar-btn {
         background-color: transparent !important;
@@ -2520,7 +2514,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1.25rem;
-        margin-top: 1.5rem;
+        margin-top: 0;
     }
 
     .sp-kpi-card {
@@ -2532,7 +2526,8 @@
         flex-direction: column;
         gap: 0.75rem;
         transition: all 0.2s ease;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        min-height: 96px;
     }
 
     .dark .sp-kpi-card {
@@ -2603,39 +2598,169 @@
 
     .dashboard-grid-bottom {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 1.5rem;
-        align-items: start;
+        grid-template-columns: 410px minmax(360px, 1.2fr) minmax(320px, 0.8fr);
+        gap: 2rem;
+        align-items: stretch;
+        margin-top: 1.25rem;
+        margin-bottom: 2rem;
     }
 
-    .sp-virtual-card {
-        width: 100%;
-        min-height: 230px;
-        border-radius: 20px;
-        padding: 25px;
-        color: white;
-        position: relative;
-        backdrop-filter: blur(10px);
-        background: linear-gradient(135deg, #0f5132, #20c997);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        transition: 0.4s ease;
-        border: none !important;
+    @media (max-width: 1280px) {
+        .dashboard-grid-bottom {
+            grid-template-columns: 410px 1fr;
+        }
+
+        .dashboard-grid-bottom > .login-activity-card {
+            grid-column: 1 / -1;
+        }
+    }
+
+    .login-activity-card {
+        background: #ffffff !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 1rem !important;
+        padding: 1.25rem !important;
+        height: 100%;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
 
     .calendar-card {
-        width: 100%;
-        min-width: 300px;
-        background: #f3f4f6 !important;
-        border-radius: 1rem !important;
-        padding: 1.5rem !important;
-        border: 1px solid #e5e7eb !important;
         height: 100%;
+        min-height: 250px;
+    }
+
+    .dashboard-grid-bottom > .sp-virtual-card {
+        min-height: 250px;
+    }
+
+    .dark .login-activity-card {
+        background: #1a1a1a !important;
+        border-color: #333333 !important;
+    }
+
+    .login-activity-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+
+    .login-activity-title {
+        font-weight: 700;
+        color: #111827;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .dark .login-activity-title {
+        color: #ffffff;
+    }
+
+    .login-activity-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 999px;
+        background: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #d1fae5;
+        white-space: nowrap;
+    }
+
+    .dark .login-activity-badge {
+        background: rgba(16, 185, 129, 0.12);
+        border-color: rgba(16, 185, 129, 0.2);
+        color: #6ee7b7;
+    }
+
+    .login-activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .login-activity-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.65rem 0.75rem;
+        border-radius: 0.75rem;
+        background: #f9fafb;
+        border: 1px solid #f3f4f6;
+    }
+
+    .dark .login-activity-item {
+        background: #141414;
+        border-color: #262626;
+    }
+
+    .login-activity-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-top: 0.35rem;
+        background: #9ca3af;
+        flex: 0 0 auto;
+    }
+
+    .login-activity-dot.success {
+        background: #10b981;
+    }
+
+    .login-activity-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+    }
+
+    .login-activity-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .login-activity-strong {
+        font-weight: 700;
+        color: #111827;
+        font-size: 0.875rem;
+    }
+
+    .dark .login-activity-strong {
+        color: #ffffff;
+    }
+
+    .login-activity-time {
+        font-size: 0.75rem;
+        color: #6b7280;
+        white-space: nowrap;
+    }
+
+    .dark .login-activity-time {
+        color: #9ca3af;
+    }
+
+    .login-activity-sub {
+        font-size: 0.75rem;
+        color: #6b7280;
+        line-height: 1.2;
+    }
+
+    .dark .login-activity-sub {
+        color: #9ca3af;
     }
 
     @media (max-width: 1024px) {
         .dashboard-grid-bottom {
             grid-template-columns: 1fr;
+            margin-top: 1rem;
         }
         
         .welcome-card {
@@ -2644,30 +2769,6 @@
         
         .welcome-title {
             font-size: 1.5rem;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .topbar {
-            padding: 0 1rem;
-        }
-        
-        .breadcrumb {
-            display: none;
-        }
-        
-        .sp-virtual-card {
-            padding: 20px;
-            min-height: 200px;
-        }
-        
-        .sp-card-number {
-            font-size: 1rem;
-            margin-top: 20px;
-        }
-        
-        .sp-balance-amount {
-            font-size: 1.25rem;
         }
     }
 
