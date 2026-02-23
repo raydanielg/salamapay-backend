@@ -40,14 +40,36 @@
                     @csrf
 
                     <div class="form-group">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" name="email" class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="email@example.com">
-                        @error('email')
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <div class="custom-country-selector" id="phone-wrapper">
+                            <div class="country-trigger" id="country-trigger">
+                                <img id="selected-flag" class="trigger-flag" src="https://flagcdn.com/w40/tz.png" alt="TZ">
+                                <span id="selected-code" class="trigger-code">+255</span>
+                                <svg class="trigger-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <input type="text" id="phone" name="phone" class="phone-input-field" value="{{ old('phone') }}" required autocomplete="tel" placeholder="7XXXXXXXX" autofocus>
+                            
+                            <div class="country-dropdown-menu" id="country-menu">
+                                <div class="country-search-container">
+                                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                    <input type="text" class="country-search-input" id="country-search" placeholder="Search country...">
+                                </div>
+                                <div class="country-list" id="country-list">
+                                    <div class="country-item loading">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 0.375rem; font-size: 0.8125rem; color: var(--muted-foreground);">We'll send a verification code to this number</div>
+                        @error('phone')
                         <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                    <button type="submit" class="btn btn-primary">Send Verification Code</button>
                 </form>
 
                 <div class="form-footer">
@@ -84,4 +106,74 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const wrapper = document.getElementById('phone-wrapper');
+        const trigger = document.getElementById('country-trigger');
+        const menu = document.getElementById('country-menu');
+        const searchInput = document.getElementById('country-search');
+        const listContainer = document.getElementById('country-list');
+        const flagImg = document.getElementById('selected-flag');
+        const codeSpan = document.getElementById('selected-code');
+        const phoneInput = document.getElementById('phone');
+        const forgotForm = document.querySelector('form[action*="password"]');
+
+        let allCountries = [];
+        let selectedCode = '255';
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            wrapper.classList.toggle('open');
+            if (wrapper.classList.contains('open')) searchInput.focus();
+        });
+
+        document.addEventListener('click', () => wrapper.classList.remove('open'));
+        menu.addEventListener('click', (e) => e.stopPropagation());
+
+        axios.get('https://restcountries.com/v3.1/all?fields=name,flags,idd')
+            .then(response => {
+                allCountries = response.data
+                    .filter(c => c.idd.root)
+                    .map(c => ({
+                        name: c.name.common,
+                        code: c.idd.root.replace('+', '') + (c.idd.suffixes ? c.idd.suffixes[0] : ''),
+                        flag: c.flags.png
+                    }))
+                    .sort((a, b) => a.name.localeCompare(b.name));
+                renderList(allCountries);
+            });
+
+        function renderList(countries) {
+            listContainer.innerHTML = '';
+            countries.forEach(country => {
+                const item = document.createElement('div');
+                item.className = 'country-item';
+                if (country.code === selectedCode) item.classList.add('selected');
+                item.innerHTML = `<img src="${country.flag}" class="item-flag"> <span class="item-name">${country.name}</span> <span class="item-code">+${country.code}</span>`;
+                item.addEventListener('click', () => {
+                    selectedCode = country.code;
+                    flagImg.src = country.flag;
+                    codeSpan.textContent = `+${country.code}`;
+                    wrapper.classList.remove('open');
+                    phoneInput.focus();
+                });
+                listContainer.appendChild(item);
+            });
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allCountries.filter(c => c.name.toLowerCase().includes(term) || c.code.includes(term));
+            renderList(filtered);
+        });
+
+        if (forgotForm) {
+            forgotForm.addEventListener('submit', function() {
+                const cleanPhone = phoneInput.value.replace(/\D/g, '');
+                phoneInput.value = selectedCode + cleanPhone;
+            });
+        }
+    });
+</script>
 @endsection

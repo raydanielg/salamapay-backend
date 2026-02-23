@@ -82,6 +82,13 @@ Route::middleware('guest')->group(function () {
     Route::post('otp/resend', [RegisterController::class, 'resendOtp'])
         ->name('otp.resend');
 
+    // Password reset OTP routes
+    Route::get('password/reset/otp', [PasswordResetController::class, 'showResetOtpForm'])
+        ->name('password.reset.otp');
+
+    Route::post('password/reset/otp', [PasswordResetController::class, 'verifyOtpAndReset'])
+        ->name('password.reset.otp.submit');
+
     Route::get('otp/cancel', [LoginController::class, 'cancelOtp'])
         ->name('otp.cancel');
 
