@@ -63,7 +63,7 @@ return [
     */
     'branding' => [
         'app_name' => env('TYRO_DASHBOARD_APP_NAME', env('APP_NAME', 'Laravel')),
-        'logo' => env('TYRO_DASHBOARD_LOGO', '/salama-pay-logo.png'),
+        'logo' => env('TYRO_DASHBOARD_LOGO', 'salama-pay-logo.png'),
         'logo_height' => env('TYRO_DASHBOARD_LOGO_HEIGHT', '32px'),
         'favicon' => env('TYRO_DASHBOARD_FAVICON', null),
         

@@ -8,7 +8,7 @@
             <div class="form-card">
                 <div class="logo-container">
                     @if($branding['logo'] ?? false)
-                    <img src="{{ $branding['logo'] }}" alt="{{ $branding['app_name'] ?? config('app.name') }}">
+                    <img src="{{ asset($branding['logo']) }}" alt="{{ $branding['app_name'] ?? config('app.name') }}">
                     @else
                     <div class="app-logo">
                         <svg viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg">
