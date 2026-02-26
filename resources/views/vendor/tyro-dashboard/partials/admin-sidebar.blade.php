@@ -32,21 +32,21 @@
 @endphp
 
  <aside id="sidebar" class="sidebar sidebar-admin" aria-label="Sidenav">
-  <div class="sidebar-header">
-      <div class="sidebar-logo-icon" style="background: none; padding: 0;">
-          <img class="brand-logo brand-logo-light" src="{{ asset('salama-pay-logo.png') }}" alt="{{ $branding['app_name'] ?? config('app.name', 'SalamaPay') }}" style="height: 48px; width: auto;" />
-          <img class="brand-logo brand-logo-dark" src="{{ asset('salama-pay-logo-white.png') }}" alt="{{ $branding['app_name'] ?? config('app.name', 'SalamaPay') }}" style="height: 48px; width: auto;" />
-      </div>
-  </div>
+    <div class="sidebar-header" style="height: auto; padding: 2rem 1rem;">
+        <div class="sidebar-logo-icon" style="background: none; padding: 0; display: flex; justify-content: center; align-items: center; width: 100%;">
+            <img class="brand-logo brand-logo-light" src="{{ asset('salama-pay-logo.png') }}" alt="{{ $branding['app_name'] ?? config('app.name', 'SalamaPay') }}" style="height: 80px; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+            <img class="brand-logo brand-logo-dark" src="{{ asset('salama-pay-logo.png') }}" alt="{{ $branding['app_name'] ?? config('app.name', 'SalamaPay') }}" style="height: 80px; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+    </div>
   <div class="sidebar-nav-container">
       <ul class="sidebar-menu-list">
-          <li class="sidebar-section-label">Admin</li>
-          <li>
-              <a href="{{ route('tyro-dashboard.index') }}#admin-menus" class="sidebar-item-link">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><path d="M4 6.5C4 5.11929 5.11929 4 6.5 4H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 12C4 10.6193 5.11929 9.5 6.5 9.5H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 17.5C4 16.1193 5.11929 15 6.5 15H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M19 7L21 9L19 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span>All Menus</span>
-              </a>
-          </li>
+    <li class="sidebar-section-label" style="color: #6366f1; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1.5rem; border-bottom: 2px solid #e0e7ff; padding-bottom: 0.25rem; margin-bottom: 1rem;">Super Admin Panel</li>
+    <li>
+        <a href="{{ route('tyro-dashboard.index') }}#admin-menus" class="sidebar-item-link" style="font-weight: 600;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor" style="color: #6366f1;"><path d="M4 6.5C4 5.11929 5.11929 4 6.5 4H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 12C4 10.6193 5.11929 9.5 6.5 9.5H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 17.5C4 16.1193 5.11929 15 6.5 15H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 7L21 9L19 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Master Control</span>
+        </a>
+    </li>
           <li>
               <a href="{{ route('tyro-dashboard.index') }}" class="sidebar-item-link {{ request()->routeIs('tyro-dashboard.index') ? 'active' : '' }}">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><path d="M3 11.9896V14.5C3 17.7998 3 19.4497 4.02513 20.4749C5.05025 21.5 6.70017 21.5 10 21.5H14C17.2998 21.5 18.9497 21.5 19.9749 20.4749C21 19.4497 21 17.7998 21 14.5V11.9896C21 10.3083 21 9.46773 20.6441 8.74005C20.2882 8.01237 19.6247 7.49628 18.2976 6.46411L16.2976 4.90855C14.2331 3.30285 13.2009 2.5 12 2.5C10.7991 2.5 9.76689 3.30285 7.70242 4.90855L5.70241 6.46411C4.37533 7.49628 3.71179 8.01237 3.3559 8.74005C3 9.46773 3 10.3083 3 11.9896Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M15.0002 17C14.2007 17.6224 13.1504 18 12.0002 18C10.8499 18 9.79971 17.6224 9.00018 17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>

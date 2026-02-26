@@ -36,6 +36,11 @@ class DashboardController extends Controller
             'recent_users' => User::latest()->take(5)->get(),
             'recent_transactions' => Transaction::with(['fromUser', 'toUser'])->latest()->take(10)->get(),
             'suspended_users' => User::where('account_status', 'suspended')->count(),
+            'role_distribution' => \DB::table(config('tyro.tables.pivot', 'user_roles'))
+                ->join(config('tyro.tables.roles', 'roles'), 'role_id', '=', config('tyro.tables.roles', 'roles').'.id')
+                ->select(config('tyro.tables.roles', 'roles').'.name', \DB::raw('count(*) as count'))
+                ->groupBy(config('tyro.tables.roles', 'roles').'.id', config('tyro.tables.roles', 'roles').'.name')
+                ->get(),
         ];
 
         return view('tyro-dashboard::dashboard.index', [
@@ -67,7 +72,7 @@ class DashboardController extends Controller
                 $q->where('buyer_id', $user->id)->orWhere('seller_id', $user->id);
             })->whereIn('status', ['created', 'funded', 'disputed'])->count(),
         ];
-
+        
         return view('tyro-dashboard::dashboard.index', [
             'user' => $user,
             'isAdmin' => false,
