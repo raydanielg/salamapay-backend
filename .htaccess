@@ -1,6 +1,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Handle favicon.ico and robots.txt
+    RewriteRule ^(favicon\.ico|robots\.txt|salama-pay-logo\.png|backgrounds\.jpg)$ public/$1 [L]
+
     # If the requested resource exists as a file or directory, serve it directly
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
