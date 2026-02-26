@@ -232,6 +232,16 @@ class RegisterController extends Controller
             'otp_expires_at' => null,
         ]);
 
+        // Send Welcome Email after successful verification
+        try {
+            Mail::to($user->email)->send(new \App\Mail\UserWelcomeMail($user->full_name));
+        } catch (\Throwable $e) {
+            \Log::error('[Tyro-Login] Failed to send welcome email after verification', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+
         Auth::login($user);
 
         return redirect(config('tyro-login.redirects.after_register', '/'));
