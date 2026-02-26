@@ -114,11 +114,10 @@ class RegisterController extends Controller
 
         // Generate OTPs
         $otpCode = (string) rand(100000, 999999);
-        $user->update([
-            'email_otp' => $otpCode,
-            'phone_otp' => $otpCode,
-            'otp_expires_at' => now()->addMinutes(10),
-        ]);
+        $user->email_otp = $otpCode;
+        $user->phone_otp = $otpCode;
+        $user->otp_expires_at = now()->addMinutes(10);
+        $user->save();
 
         // Send OTP Email
         try {
@@ -126,7 +125,8 @@ class RegisterController extends Controller
         } catch (\Throwable $e) {
             \Log::error('[Tyro-Login] Failed to send registration OTP email', [
                 'user_id' => $user->id,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
         }
 
