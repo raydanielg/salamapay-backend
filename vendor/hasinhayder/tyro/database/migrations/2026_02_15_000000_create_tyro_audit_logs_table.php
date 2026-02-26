@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create(config('tyro.tables.audit_logs', 'tyro_audit_logs'), function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable()->index();
+            $table->uuid('user_id')->nullable()->index();
             $table->string('event')->index();
-            $table->nullableMorphs('auditable');
+            $table->nullableUuidMorphs('auditable');
             $table->json('old_values')->nullable();
             $table->json('new_values')->nullable();
             $table->json('metadata')->nullable();
