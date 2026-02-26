@@ -18,11 +18,6 @@ class SecureAuthPageMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $cookieName = 'auth_page_device_key';
-        $masterKey = env('AUTH_PAGE_KEY');
-
-        if (!is_string($masterKey) || $masterKey === '') {
-            return $next($request);
-        }
 
         if (!$request->isMethod('get')) {
             return $next($request);
@@ -50,43 +45,38 @@ class SecureAuthPageMiddleware
             }
         }
 
-        $provided = $request->query('key');
-        if (is_string($provided) && $provided !== '' && hash_equals($masterKey, $provided)) {
-            $plainToken = Str::random(64);
-            $tokenHash = hash('sha256', $plainToken);
+        // Auto-enroll this device/session: generate a token, store the hash in DB, set HttpOnly cookie.
+        $plainToken = Str::random(64);
+        $tokenHash = hash('sha256', $plainToken);
 
-            $ttlDays = (int) env('AUTH_PAGE_DEVICE_KEY_TTL_DAYS', 30);
-            $expiresAt = CarbonImmutable::now()->addDays(max(1, $ttlDays));
+        $ttlDays = (int) env('AUTH_PAGE_DEVICE_KEY_TTL_DAYS', 30);
+        $expiresAt = CarbonImmutable::now()->addDays(max(1, $ttlDays));
 
-            AuthPageDeviceKey::create([
-                'user_id' => auth()->check() ? auth()->id() : null,
-                'token_hash' => $tokenHash,
-                'ip_address' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'last_used_at' => now(),
-                'expires_at' => $expiresAt,
-                'revoked' => false,
-            ]);
+        AuthPageDeviceKey::create([
+            'user_id' => auth()->check() ? auth()->id() : null,
+            'token_hash' => $tokenHash,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'last_used_at' => now(),
+            'expires_at' => $expiresAt,
+            'revoked' => false,
+        ]);
 
-            Cookie::queue(
-                Cookie::make(
-                    $cookieName,
-                    $plainToken,
-                    $expiresAt->diffInMinutes(CarbonImmutable::now()),
-                    '/',
-                    null,
-                    $request->isSecure(),
-                    true,
-                    false,
-                    'Lax'
-                )
-            );
+        Cookie::queue(
+            Cookie::make(
+                $cookieName,
+                $plainToken,
+                $expiresAt->diffInMinutes(CarbonImmutable::now()),
+                '/',
+                null,
+                $request->isSecure(),
+                true,
+                false,
+                'Lax'
+            )
+        );
 
-            session(['auth_page_access' => true]);
-            return redirect($request->fullUrlWithQuery(['key' => null]));
-        }
-
-        $nextUrl = $request->getRequestUri();
-        return redirect()->to('/access-key?next=' . urlencode($nextUrl));
+        session(['auth_page_access' => true]);
+        return $next($request);
     }
 }
