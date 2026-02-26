@@ -102,7 +102,7 @@ return [
     */
     'routes' => [
         'prefix' => env('TYRO_LOGIN_ROUTE_PREFIX', 'auth'),
-        'middleware' => ['web', 'auth.page.key'],
+        'middleware' => ['web'],
         'login' => 'login',
         'logout' => 'logout',
         'register' => 'register',
