@@ -86,6 +86,7 @@ class SecureAuthPageMiddleware
             return redirect($request->fullUrlWithQuery(['key' => null]));
         }
 
-        abort(403, 'Unauthorized access to authentication pages.');
+        $nextUrl = $request->getRequestUri();
+        return redirect()->to('/access-key?next=' . urlencode($nextUrl));
     }
 }

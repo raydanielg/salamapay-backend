@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\AccessKeyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('tyro-login.login');
 });
+
+Route::get('/access-key', [AccessKeyController::class, 'show'])->name('access-key.show');
+Route::post('/access-key', [AccessKeyController::class, 'store'])->name('access-key.store');
 
 Route::get('/terms', function () {
     return view('legal.terms');
