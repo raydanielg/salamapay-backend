@@ -101,7 +101,7 @@ class RegisterController extends Controller
         }
 
         $userData = [
-            'name' => $name,
+            'full_name' => $name,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ];
