@@ -64,7 +64,7 @@
                 General Settings
             </h3>
             
-            <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6">
+            <form action="{{ route('tyro-dashboard.admin.settings.update') }}" method="POST" class="space-y-6">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -99,7 +99,7 @@
                 Mail Configuration (.env)
             </h3>
             
-            <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6">
+            <form action="{{ route('tyro-dashboard.admin.settings.update') }}" method="POST" class="space-y-6">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
