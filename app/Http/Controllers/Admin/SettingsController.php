@@ -89,4 +89,17 @@ class SettingsController extends Controller
 
         file_put_contents($path, $content);
     }
+
+    public function testMail(Request $request)
+    {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\TestSmtpMail($user->full_name));
+            return back()->with('success', 'Email ya majaribio imetumwa kwenda ' . $user->email);
+        } catch (\Throwable $e) {
+            \Log::error('SMTP Test Failed: ' . $e->getMessage());
+            return back()->with('error', 'Imeshindwa kutuma email: ' . $e->getMessage());
+        }
+    }
 }

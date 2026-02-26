@@ -136,11 +136,18 @@
                     </div>
                 </div>
 
-                <div class="pt-4 flex justify-end">
+                <div class="pt-4 flex justify-between items-center">
+                    <button type="button" onclick="document.getElementById('test-mail-form').submit();" class="text-indigo-600 hover:text-indigo-700 font-bold text-sm flex items-center gap-2 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        Send Test Email
+                    </button>
                     <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
                         Update Mail Settings
                     </button>
                 </div>
+            </form>
+            <form id="test-mail-form" action="{{ route('tyro-dashboard.admin.settings.test-mail') }}" method="POST" style="display: none;">
+                @csrf
             </form>
         </div>
 

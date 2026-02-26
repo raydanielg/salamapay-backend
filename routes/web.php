@@ -148,4 +148,5 @@ Route::group([
     // Admin System Settings
     Route::get('/admin/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings.index');
     Route::post('/admin/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('admin.settings.update');
+    Route::post('/admin/settings/test-mail', [\App\Http\Controllers\Admin\SettingsController::class, 'testMail'])->name('admin.settings.test-mail');
 });
