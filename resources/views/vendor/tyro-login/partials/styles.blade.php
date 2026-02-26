@@ -506,10 +506,8 @@
     .logo-container img {
         height: {{ $branding['logo_height'] ?? '120px' }};
         width: auto;
-        object-fit: contain;
-        display: block;
-        margin: 0 auto;
         max-width: 100%;
+        object-fit: contain;
     }
 
     .logo-container .app-logo {

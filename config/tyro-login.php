@@ -87,7 +87,7 @@ return [
         // Logo URL (recommended: SVG or high-res PNG)
         // Set to null to use text-based logo with app name
         // Example: 'https://yourapp.com/logo.svg' or '/images/logo.png'
-        'logo' => env('TYRO_LOGIN_LOGO', 'salama-pay-logo.png'),
+        'logo' => env('TYRO_LOGIN_LOGO', '/salama-pay-logo.png'),
 
         // Logo height for proper display scaling
         // Accepts any valid CSS height value (px, rem, etc.)
