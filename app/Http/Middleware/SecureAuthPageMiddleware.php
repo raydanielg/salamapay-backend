@@ -18,6 +18,8 @@ class SecureAuthPageMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $cookieName = 'auth_page_device_key';
+        $frontendUrl = env('FRONTEND_URL');
+        $forwardTokenToFrontend = filter_var(env('AUTH_PAGE_FORWARD_TOKEN_TO_FRONTEND', false), FILTER_VALIDATE_BOOL);
 
         if (!$request->isMethod('get')) {
             return $next($request);
@@ -41,6 +43,19 @@ class SecureAuthPageMiddleware
             if ($key) {
                 $key->forceFill(['last_used_at' => now()])->save();
                 session(['auth_page_access' => true]);
+
+                if (
+                    $forwardTokenToFrontend
+                    && is_string($frontendUrl)
+                    && $frontendUrl !== ''
+                    && in_array($request->path(), ['login', 'register'], true)
+                    && !$request->query->has('token')
+                ) {
+                    $target = rtrim($frontendUrl, '/') . '/' . ltrim($request->path(), '/');
+                    $target .= '?token=' . urlencode($cookieToken);
+                    return redirect()->away($target);
+                }
+
                 return $next($request);
             }
         }
@@ -77,6 +92,19 @@ class SecureAuthPageMiddleware
         );
 
         session(['auth_page_access' => true]);
+
+        if (
+            $forwardTokenToFrontend
+            && is_string($frontendUrl)
+            && $frontendUrl !== ''
+            && in_array($request->path(), ['login', 'register'], true)
+            && !$request->query->has('token')
+        ) {
+            $target = rtrim($frontendUrl, '/') . '/' . ltrim($request->path(), '/');
+            $target .= '?token=' . urlencode($plainToken);
+            return redirect()->away($target);
+        }
+
         return $next($request);
     }
 }
