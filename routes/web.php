@@ -144,4 +144,8 @@ Route::group([
     Route::get('/developer/webhooks', function () {
         return view('tyro-dashboard::developer.webhooks');
     })->name('developer.webhooks');
+
+    // Admin System Settings
+    Route::get('/admin/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings.index');
+    Route::post('/admin/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('admin.settings.update');
 });

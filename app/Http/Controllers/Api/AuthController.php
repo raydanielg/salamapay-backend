@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Mail\UserRegistrationOtpMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -28,6 +29,19 @@ class AuthController extends Controller
             'user_type' => $request->user_type,
             'is_active' => true,
         ]);
+
+        // Generate and Send OTP
+        $otp = (string) rand(100000, 999999);
+        $user->update([
+            'email_otp' => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+        ]);
+
+        try {
+            Mail::to($user->email)->send(new UserRegistrationOtpMail($otp, $user->name));
+        } catch (\Throwable $e) {
+            \Log::error('Signup OTP Mail failed: ' . $e->getMessage());
+        }
 
         if (method_exists($user, 'hasRole') && method_exists($user, 'assignRole')) {
             try {
