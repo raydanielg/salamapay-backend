@@ -224,8 +224,9 @@ class RegisterController extends Controller
 
         // Verify user
         $user->update([
-            'email_verified_at' => now(), // Still marking email as verified for simple flow
+            'email_verified_at' => now(), 
             'phone_verified_at' => now(),
+            'account_status' => 'active',
             'email_otp' => null,
             'phone_otp' => null,
             'otp_expires_at' => null,

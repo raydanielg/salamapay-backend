@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('kyc_status')->default('pending'); // pending, verified, rejected
-            $table->string('account_status')->default('active'); // active, suspended, frozen
+            $table->string('account_status')->default('pending'); // active, suspended, frozen, pending
             $table->text('two_factor_secret')->nullable();
             $table->string('last_login_ip')->nullable();
             $table->rememberToken();
