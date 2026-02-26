@@ -11,7 +11,7 @@ return new class extends Migration
         $pivot = config('tyro.tables.pivot', 'user_roles');
         Schema::create($pivot, function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('role_id')->constrained(config('tyro.tables.roles', 'roles'))->cascadeOnDelete();
             $table->unique(['user_id', 'role_id']);
             $table->timestamps();
