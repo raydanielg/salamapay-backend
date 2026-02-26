@@ -171,7 +171,7 @@ trait HasTyroRoles {
     /**
      * Get Tyro slugs data with optimized caching and relation handling.
      */
-    protected function getTyroSlugsData(int $userId, string $type): array {
+    protected function getTyroSlugsData(string|int $userId, string $type): array {
         if ($type === 'roles') {
             // Handle role slugs
             if ($this->relationLoaded('roles')) {
