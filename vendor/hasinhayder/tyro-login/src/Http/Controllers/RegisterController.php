@@ -113,16 +113,24 @@ class RegisterController extends Controller
         $user = $userModel::create($userData);
 
         // Generate OTPs
-        $emailOtp = rand(100000, 999999);
-        $phoneOtp = rand(100000, 999999);
+        $otpCode = (string) rand(100000, 999999);
         $user->update([
-            'email_otp' => $emailOtp,
-            'phone_otp' => $phoneOtp,
+            'email_otp' => $otpCode,
+            'phone_otp' => $otpCode,
             'otp_expires_at' => now()->addMinutes(10),
         ]);
 
-        // In production, send these via Mail/SMS
-        // For now, we'll store them in session to show on verify page if in debug mode
+        // Send OTP Email
+        try {
+            Mail::to($user->email)->send(new \App\Mail\UserRegistrationOtpMail($otpCode, $name));
+        } catch (\Throwable $e) {
+            \Log::error('[Tyro-Login] Failed to send registration OTP email', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+
+        // Store user ID in session for verification
         $request->session()->put('tyro-login.verification.user_id', $user->id);
 
         event(new Registered($user));
@@ -202,7 +210,7 @@ class RegisterController extends Controller
             'phone_otp' => ['required', 'string', 'size:6'],
         ]);
 
-        if ($user->phone_otp !== $request->phone_otp) {
+        if ($user->email_otp !== $request->phone_otp && $user->phone_otp !== $request->phone_otp) {
             throw ValidationException::withMessages([
                 'phone_otp' => 'The provided OTP is incorrect.',
             ]);
