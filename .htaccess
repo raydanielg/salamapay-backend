@@ -1,14 +1,18 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Handle favicon.ico and robots.txt
-    RewriteRule ^(favicon\.ico|robots\.txt|salama-pay-logo\.png|backgrounds\.jpg)$ public/$1 [L]
+    # If the requested resource exists as a file or directory in the public/ folder, serve it
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
+    RewriteRule ^(.*)$ public/$1 [L]
 
-    # If the requested resource exists as a file or directory, serve it directly
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^ - [L]
+    # Handle assets that might be requested without 'public/' prefix (fallback for relative paths)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/$1 [L]
 
-    # Otherwise, forward everything to /public
-    RewriteRule ^ public/$0 [L]
+    # Send everything else to Laravel's index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
 </IfModule>
