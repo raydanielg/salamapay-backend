@@ -35,6 +35,10 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     Notifications
                 </a>
+                <a href="#mail" class="p-4 border-l-4 border-transparent hover:bg-slate-50 text-slate-600 flex items-center gap-3 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Mail Configuration
+                </a>
                 <a href="#api" class="p-4 border-l-4 border-transparent hover:bg-slate-50 text-slate-600 flex items-center gap-3 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                     API & Webhooks
@@ -88,7 +92,59 @@
                     <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
                         Save Changes
                     </button>
+             Mail Configuration Section -->
+        <div id="mail" class="bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
+            <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span>
+                Mail Configuration (.env)
+            </h3>
+            
+            <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mail Mailer</label>
+                        <input type="text" name="mail_mailer" value="{{ $settings['mail_mailer'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none cursor-not-allowed" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mail Host</label>
+                        <input type="text" name="mail_host" value="{{ $settings['mail_host'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mail Port</label>
+                        <input type="text" name="mail_port" value="{{ $settings['mail_port'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mail Encryption</label>
+                        <input type="text" name="mail_encryption" value="{{ $settings['mail_encryption'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mail Username</label>
+                        <input type="text" name="mail_username" value="{{ $settings['mail_username'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Mail Password</label>
+                        <input type="password" name="mail_password" value="{{ $settings['mail_password'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">From Address</label>
+                        <input type="email" name="mail_from_address" value="{{ $settings['mail_from_address'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">From Name</label>
+                        <input type="text" name="mail_from_name" value="{{ $settings['mail_from_name'] }}" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none">
+                    </div>
                 </div>
+
+                <div class="pt-4 flex justify-end">
+                    <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
+                        Update Mail Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!--    </div>
             </form>
         </div>
 
