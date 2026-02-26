@@ -101,8 +101,8 @@ return [
     |--------------------------------------------------------------------------
     */
     'routes' => [
-        'prefix' => env('TYRO_LOGIN_ROUTE_PREFIX', ''),
-        'middleware' => ['web'],
+        'prefix' => env('TYRO_LOGIN_ROUTE_PREFIX', 'auth'),
+        'middleware' => ['web', 'auth.page.key'],
         'login' => 'login',
         'logout' => 'logout',
         'register' => 'register',
