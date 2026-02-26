@@ -1,5 +1,6 @@
 @extends('tyro-login::layouts.auth')
 
+@section('title', 'Login')
 @section('content')
 <div class="auth-container two-col">
     <div class="auth-grid">

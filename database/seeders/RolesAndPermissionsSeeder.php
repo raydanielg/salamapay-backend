@@ -97,11 +97,11 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@salamapay.com'],
             [
-                'name' => 'Super Admin',
+                'full_name' => 'Super Admin',
                 'phone' => '255712345678',
                 'password' => Hash::make('password'),
-                'user_type' => 'admin',
-                'is_active' => true,
+                'kyc_status' => 'verified',
+                'account_status' => 'active',
             ]
         );
         $admin->assignRole($superAdminRole);
@@ -109,11 +109,11 @@ class RolesAndPermissionsSeeder extends Seeder
         $client = User::firstOrCreate(
             ['email' => 'client@example.com'],
             [
-                'name' => 'John Client',
+                'full_name' => 'John Client',
                 'phone' => '255723456789',
                 'password' => Hash::make('password'),
-                'user_type' => 'client',
-                'is_active' => true,
+                'kyc_status' => 'verified',
+                'account_status' => 'active',
             ]
         );
         $client->assignRole($clientRole);
@@ -121,11 +121,11 @@ class RolesAndPermissionsSeeder extends Seeder
         $provider = User::firstOrCreate(
             ['email' => 'provider@example.com'],
             [
-                'name' => 'Jane Provider',
+                'full_name' => 'Jane Provider',
                 'phone' => '255734567890',
                 'password' => Hash::make('password'),
-                'user_type' => 'provider',
-                'is_active' => true,
+                'kyc_status' => 'verified',
+                'account_status' => 'active',
             ]
         );
         $provider->assignRole($providerRole);

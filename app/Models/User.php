@@ -12,13 +12,33 @@ use HasinHayder\TyroLogin\Traits\HasTwoFactorAuth;
 
 
 
+use Illuminate\Support\Str;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasTyroRoles, HasTwoFactorAuth;
 
-
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->incrementing = false;
+            $model->keyType = 'string';
+            
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+            if (empty($model->account_number)) {
+                $model->account_number = 'SP-' . strtoupper(Str::random(10));
+            }
+        });
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -26,15 +46,16 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'id',
+        'account_number',
+        'full_name',
         'email',
         'phone',
         'password',
-        'user_type',
-        'is_active',
-        'email_verified_at',
-        'phone_verified_at',
-        'profile_photo',
+        'kyc_status',
+        'account_status',
+        'two_factor_secret',
+        'last_login_ip',
     ];
 
     /**
@@ -77,23 +98,38 @@ class User extends Authenticatable
         return $this->hasMany(Project::class, 'provider_id');
     }
 
-    public function transactions()
+    public function wallet()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasOne(Wallet::class);
     }
 
-    public function isAdmin()
+    public function escrowsAsBuyer()
     {
-        return $this->user_type === 'admin' || $this->hasRole('admin');
+        return $this->hasMany(Escrow::class, 'buyer_id');
     }
 
-    public function isClient()
+    public function escrowsAsSeller()
     {
-        return $this->user_type === 'client';
+        return $this->hasMany(Escrow::class, 'seller_id');
     }
 
-    public function isProvider()
+    public function withdrawals()
     {
-        return $this->user_type === 'provider';
+        return $this->hasMany(Withdrawal::class);
+    }
+
+    public function payouts()
+    {
+        return $this->hasMany(Payout::class, 'merchant_id');
+    }
+
+    public function auditLogs()
+    {
+        return $this->hasMany(AuditLog::class);
+    }
+
+    public function fraudFlags()
+    {
+        return $this->hasMany(FraudFlag::class);
     }
 }

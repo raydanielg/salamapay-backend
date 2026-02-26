@@ -63,7 +63,7 @@ return [
     | This can be a local path or an external URL.
     |
     */
-    'background_image' => env('TYRO_LOGIN_BACKGROUND_IMAGE', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80'),
+    'background_image' => env('TYRO_LOGIN_BACKGROUND_IMAGE', '/backgrounds.jpg'),
 
     /*
     |--------------------------------------------------------------------------
@@ -87,12 +87,12 @@ return [
         // Logo URL (recommended: SVG or high-res PNG)
         // Set to null to use text-based logo with app name
         // Example: 'https://yourapp.com/logo.svg' or '/images/logo.png'
-        'logo' => env('TYRO_LOGIN_LOGO', null),
+        'logo' => env('TYRO_LOGIN_LOGO', '/salama-pay-logo.png'),
 
         // Logo height for proper display scaling
         // Accepts any valid CSS height value (px, rem, etc.)
         // Common values: '32px', '48px', '3rem'
-        'logo_height' => env('TYRO_LOGIN_LOGO_HEIGHT', '48px'),
+        'logo_height' => env('TYRO_LOGIN_LOGO_HEIGHT', '120px'),
     ],
 
     /*

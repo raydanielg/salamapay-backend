@@ -10,20 +10,18 @@
 <div class="page-header">
     <div class="page-header-row">
         <div>
-            <h1 class="page-title">Welcome back, {{ $user->name ?? 'User' }}!</h1>
-            <p class="page-description">Here's what's happening with your account today.</p>
+            <h1 class="page-title">Welcome back, {{ $user->full_name ?? 'User' }}!</h1>
+            <p class="page-description">Hapa kuna muhtasari wa akaunti yako leo.</p>
         </div>
     </div>
 </div>
 
 @if($isAdmin ?? false)
-<!-- Stats Grid -->
+<!-- Admin Dashboard -->
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-icon stat-icon-primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
         </div>
         <div class="stat-content">
             <div class="stat-label">Total Users</div>
@@ -33,33 +31,27 @@
 
     <div class="stat-card">
         <div class="stat-icon stat-icon-success">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
         </div>
         <div class="stat-content">
-            <div class="stat-label">Total Roles</div>
-            <div class="stat-value">{{ number_format($stats['total_roles'] ?? 0) }}</div>
+            <div class="stat-label">Total Escrows</div>
+            <div class="stat-value">{{ number_format($stats['total_escrows'] ?? 0) }}</div>
         </div>
     </div>
 
     <div class="stat-card">
         <div class="stat-icon stat-icon-info">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
         <div class="stat-content">
-            <div class="stat-label">Total Privileges</div>
-            <div class="stat-value">{{ number_format($stats['total_privileges'] ?? 0) }}</div>
+            <div class="stat-label">Escrow Volume</div>
+            <div class="stat-value">{{ number_format($stats['escrow_volume'] ?? 0, 2) }} TZS</div>
         </div>
     </div>
 
     <div class="stat-card">
         <div class="stat-icon stat-icon-danger">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
         </div>
         <div class="stat-content">
             <div class="stat-label">Suspended Users</div>
@@ -67,74 +59,86 @@
         </div>
     </div>
 </div>
-
-<div class="grid-2">
-    <!-- Recent Users -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Recent Users</h3>
-            <a href="{{ route('tyro-dashboard.users.index') }}" class="btn btn-sm btn-ghost">View All</a>
+@else
+<!-- User Dashboard -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
-        <div class="card-body" style="padding: 0;">
-            @if(isset($stats['recent_users']) && $stats['recent_users']->count())
-            <div class="table-container">
-                <table class="table">
-                    <tbody>
-                        @foreach($stats['recent_users'] as $recentUser)
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-cell-avatar" style="{{ ($recentUser->profile_photo_path || $recentUser->use_gravatar) ? 'background: none; padding: 0;' : '' }}">
-                                        @if($recentUser->profile_photo_path || ($recentUser->use_gravatar && $recentUser->email))
-                                            <img src="{{ $recentUser->profile_photo_url }}" alt="{{ $recentUser->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                                        @else
-                                            {{ strtoupper(substr($recentUser->name, 0, 1)) }}
-                                        @endif
-                                    </div>
-                                    <div class="user-cell-info">
-                                        <div class="user-cell-name">{{ $recentUser->name }}</div>
-                                        <div class="user-cell-email">{{ $recentUser->email }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="text-align: right;">
-                                @if(method_exists($recentUser, 'isSuspended') && $recentUser->isSuspended())
-                                    <span class="badge badge-danger">Suspended</span>
-                                @else
-                                    <span class="badge badge-success">Active</span>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @else
-            <div class="empty-state">
-                <p class="empty-state-description">No users found.</p>
-            </div>
-            @endif
+        <div class="stat-content">
+            <div class="stat-label">Available Balance</div>
+            <div class="stat-value">{{ number_format($stats['wallet']->available_balance ?? 0, 2) }} {{ $stats['wallet']->currency }}</div>
         </div>
     </div>
 
-    <!-- Role Distribution -->
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <div class="stat-content">
+            <div class="stat-label">Locked in Escrow</div>
+            <div class="stat-value">{{ number_format($stats['wallet']->locked_balance ?? 0, 2) }} {{ $stats['wallet']->currency }}</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+        </div>
+        <div class="stat-content">
+            <div class="stat-label">Active Escrows</div>
+            <div class="stat-value">{{ $stats['active_escrows_count'] ?? 0 }}</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <div class="stat-content">
+            <div class="stat-label">Pending Balance</div>
+            <div class="stat-value">{{ number_format($stats['wallet']->pending_balance ?? 0, 2) }} {{ $stats['wallet']->currency }}</div>
+        </div>
+    </div>
+</div>
+@endif
+
+<div class="grid-2">
+    <!-- Recent Activity -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Role Distribution</h3>
-            <a href="{{ route('tyro-dashboard.roles.index') }}" class="btn btn-sm btn-ghost">Manage Roles</a>
+            <h3 class="card-title">{{ $isAdmin ? 'Recent Transactions' : 'My Recent Transactions' }}</h3>
+            <a href="{{ route('tyro-dashboard.transactions') }}" class="btn btn-sm btn-ghost">View All</a>
         </div>
         <div class="card-body" style="padding: 0;">
-            @if(isset($stats['role_distribution']) && $stats['role_distribution']->count())
+            @if(isset($stats['recent_transactions']) && $stats['recent_transactions']->count())
             <div class="table-container">
                 <table class="table">
-                    <tbody>
-                        @foreach($stats['role_distribution'] as $roleStat)
+                    <thead>
                         <tr>
+                            <th>Reference</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($stats['recent_transactions'] as $tx)
+                        <tr>
+                            <td><span class="font-mono text-xs">{{ $tx->reference_number }}</span></td>
+                            <td><span class="badge badge-primary">{{ ucfirst(str_replace('_', ' ', $tx->type)) }}</span></td>
+                            <td>{{ number_format($tx->amount, 2) }} {{ $tx->currency }}</td>
                             <td>
-                                <span class="badge badge-primary">{{ $roleStat['name'] }}</span>
-                            </td>
-                            <td style="text-align: right;">
-                                <strong>{{ $roleStat['count'] }}</strong> users
+                                @php
+                                    $statusClass = match($tx->status) {
+                                        'completed' => 'badge-success',
+                                        'pending' => 'badge-warning',
+                                        'failed', 'reversed' => 'badge-danger',
+                                        default => 'badge-secondary'
+                                    };
+                                @endphp
+                                <span class="badge {{ $statusClass }}">{{ ucfirst($tx->status) }}</span>
                             </td>
                         </tr>
                         @endforeach
@@ -143,7 +147,7 @@
             </div>
             @else
             <div class="empty-state">
-                <p class="empty-state-description">No roles found.</p>
+                <p class="empty-state-description">No recent transactions found.</p>
             </div>
             @endif
         </div>

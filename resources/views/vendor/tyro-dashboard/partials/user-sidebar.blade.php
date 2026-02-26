@@ -5,14 +5,12 @@
   </svg>
 </button>
 
-<aside id="sidebar" class="sidebar sidebar-user" aria-label="Sidenav">
+ <aside id="sidebar" class="sidebar sidebar-user" aria-label="Sidenav">
   <div class="sidebar-header">
     <div class="sidebar-logo-icon" style="background: none; padding: 0;">
-      <svg viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; color: #059669;">
-        <path d="M49.626 11.564a.809.809 0 0 1 .028.209v10.972a.8.8 0 0 1-.402.694l-9.209 5.302V39.25c0 .286-.152.55-.4.694L20.42 51.01c-.044.025-.092.041-.14.058-.018.006-.035.017-.054.022a.805.805 0 0 1-.41 0c-.022-.006-.042-.018-.063-.026-.044-.016-.09-.03-.132-.054L.402 39.944A.801.801 0 0 1 0 39.25V6.334c0-.072.01-.142.028-.21.006-.023.02-.044.028-.067.015-.042.029-.085.051-.124.015-.026.037-.047.055-.071.023-.032.044-.065.071-.093.023-.023.053-.04.079-.06.029-.024.055-.05.088-.069h.001l9.61-5.533a.801.801 0 0 1 .8 0l9.61 5.533h.002c.032.02.059.045.088.068.026.02.055.038.078.06.028.029.048.062.072.094.018.024.04.045.054.071.023.039.036.082.052.124.009.023.022.044.028.068zm-1.574 10.718v-9.124l-3.363 1.936-4.646 2.675v9.124l8.01-4.611zm-9.61 16.505v-9.13l-4.57 2.61-13.05 7.448v9.216l17.62-10.144zM1.602 7.719v31.068L19.22 48.93v-9.214l-9.204-5.209-.003-.002-.004-.002c-.031-.018-.057-.044-.086-.066-.025-.02-.054-.036-.076-.058l-.002-.003c-.026-.025-.044-.056-.066-.084-.02-.027-.044-.05-.06-.078l-.001-.003c-.018-.03-.029-.066-.042-.1-.013-.03-.03-.058-.038-.09v-.001c-.01-.038-.012-.078-.016-.117-.004-.03-.012-.06-.012-.09v-.002-21.481L4.965 9.654 1.602 7.72zm8.81-5.994L2.405 6.334l8.005 4.609 8.006-4.61-8.006-4.608zm4.164 28.764l4.645-2.674V7.719l-3.363 1.936-4.646 2.675v20.096l3.364-1.937zM39.243 7.164l-8.006 4.609 8.006 4.609 8.005-4.61-8.005-4.608zm-.801 10.605l-4.646-2.675-3.363-1.936v9.124l4.645 2.674 3.364 1.937v-9.124zM20.02 38.33l11.743-6.704 5.87-3.35-8-4.606-9.211 5.303-8.395 4.833 7.993 4.524z" fill="currentColor" />
-      </svg>
+      <img class="brand-logo brand-logo-light" src="{{ asset('salama-pay-logo.png') }}" alt="{{ $branding['app_name'] ?? config('app.name', 'SalamaPay') }}" style="height: 48px; width: auto;" />
+      <img class="brand-logo brand-logo-dark" src="{{ asset('salama-pay-logo-white.png') }}" alt="{{ $branding['app_name'] ?? config('app.name', 'SalamaPay') }}" style="height: 48px; width: auto;" />
     </div>
-    <span class="sidebar-logo-text">Salamapay</span>
   </div>
 
   <div class="sidebar-nav-container">
@@ -33,19 +31,21 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor" class="sidebar-chevron"><path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
           </button>
           <ul id="dropdown-payments" class="sidebar-dropdown-list">
-            <li><a href="#" class="sidebar-dropdown-item">Transactions</a></li>
+            <li><a href="{{ route('tyro-dashboard.transactions') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.transactions') ? 'active' : '' }}">Transactions</a></li>
+            <li><a href="{{ route('tyro-dashboard.payments.create') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.payments.create') ? 'active' : '' }}">Create</a></li>
           </ul>
         </li>
 
         <li>
-          <button type="button" class="sidebar-dropdown-btn" data-dropdown-target="dropdown-checkout" onclick="toggleDropdown('dropdown-checkout')">
+          <button type="button" class="sidebar-dropdown-btn" data-dropdown-target="dropdown-withdrawals" onclick="toggleDropdown('dropdown-withdrawals')">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><path d="M3.50002 10V15C3.50002 17.8284 3.50002 19.2426 4.37869 20.1213C5.25737 21 6.67159 21 9.50002 21H14.5C17.3284 21 18.7427 21 19.6213 20.1213C20.5 19.2426 20.5 17.8284 20.5 15V10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M17 7.50184C17 8.88255 15.8807 9.99997 14.5 9.99997C13.1193 9.99997 12 8.88068 12 7.49997C12 8.88068 10.8807 9.99997 9.50002 9.99997C8.1193 9.99997 7.00002 8.88068 7.00002 7.49997C7.00002 8.88068 5.82655 9.99997 4.37901 9.99997C3.59984 9.99997 2.90008 9.67567 2.42 9.16087C1.59462 8.2758 2.12561 6.97403 2.81448 5.98842L3.20202 5.45851C4.08386 4.2527 4.52478 3.6498 5.16493 3.32494C5.80508 3.00008 6.55201 3.00018 8.04587 3.00038L15.9551 3.00143C17.4485 3.00163 18.1952 3.00173 18.8351 3.32658C19.475 3.65143 19.9158 4.25414 20.7974 5.45957L21.1855 5.99029C21.8744 6.97589 22.4054 8.27766 21.58 9.16273C21.0999 9.67754 20.4002 10.0018 19.621 10.0018C18.1734 10.0018 17 8.88255 17 7.50184Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M14.9971 17C14.3133 17.6072 13.2247 18 11.9985 18C10.7723 18 9.68376 17.6072 9 17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
-            <span class="flex-1 text-left">Checkout</span>
+            <span class="flex-1 text-left">Withdrawals</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor" class="sidebar-chevron"><path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
           </button>
-          <ul id="dropdown-checkout" class="sidebar-dropdown-list">
-            <li><a href="#" class="sidebar-dropdown-item">Payment Profiles</a></li>
-            <li><a href="#" class="sidebar-dropdown-item">Payment Pages</a></li>
+          <ul id="dropdown-withdrawals" class="sidebar-dropdown-list">
+            <li><a href="{{ route('tyro-dashboard.withdrawals.approved') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.withdrawals.approved') ? 'active' : '' }}">Approved</a></li>
+            <li><a href="{{ route('tyro-dashboard.withdrawals.pending') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.withdrawals.pending') ? 'active' : '' }}">Pending</a></li>
+            <li><a href="{{ route('tyro-dashboard.withdrawals.requested') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.withdrawals.requested') ? 'active' : '' }}">Requested</a></li>
           </ul>
         </li>
 
@@ -56,8 +56,8 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor" class="sidebar-chevron"><path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
           </button>
           <ul id="dropdown-payouts" class="sidebar-dropdown-list">
-            <li><a href="#" class="sidebar-dropdown-item">Payout History</a></li>
-            <li><a href="#" class="sidebar-dropdown-item">Payout Credentials</a></li>
+            <li><a href="{{ route('tyro-dashboard.payouts.history') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.payouts.history') ? 'active' : '' }}">Payout History</a></li>
+            <li><a href="{{ route('tyro-dashboard.payouts.credentials') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.payouts.credentials') ? 'active' : '' }}">Payout Credentials</a></li>
           </ul>
         </li>
 
@@ -68,7 +68,8 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor" class="sidebar-chevron"><path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
           </button>
           <ul id="dropdown-settings" class="sidebar-dropdown-list">
-            <li><a href="#" class="sidebar-dropdown-item">Notifications</a></li>
+            <li><a href="{{ route('tyro-dashboard.profile') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.profile') ? 'active' : '' }}">My Profile</a></li>
+            <li><a href="{{ route('tyro-dashboard.settings.2fa') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.settings.2fa') ? 'active' : '' }}">2FA</a></li>
           </ul>
         </li>
 
@@ -79,10 +80,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor" class="sidebar-chevron"><path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
           </button>
           <ul id="dropdown-developer" class="sidebar-dropdown-list">
-            <li><a href="#" class="sidebar-dropdown-item">API Keys</a></li>
-            <li><a href="#" class="sidebar-dropdown-item">API Configuration</a></li>
+            <li><a href="{{ route('tyro-dashboard.developer.api-keys') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.developer.api-keys') ? 'active' : '' }}">API Keys</a></li>
+            <li><a href="{{ route('tyro-dashboard.developer.api-configuration') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.developer.api-configuration') ? 'active' : '' }}">API Configuration</a></li>
             <li>
-              <a href="#" class="sidebar-dropdown-item">
+              <a href="{{ route('tyro-dashboard.developer.webhooks') }}" class="sidebar-dropdown-item {{ request()->routeIs('tyro-dashboard.developer.webhooks') ? 'active' : '' }}">
                 <span>Webhooks</span>
                 <span class="sidebar-pill">New</span>
               </a>
@@ -95,21 +96,14 @@
     <div class="sidebar-user-bottom">
       <ul class="sidebar-menu-list">
         <li>
-          <a href="{{ route('tyro-dashboard.profile') }}" class="sidebar-item-link">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><path d="M15.5 10.5C15.5 8.567 13.933 7 12 7C10.067 7 8.5 8.567 8.5 10.5C8.5 12.433 10.067 14 12 14C13.933 14 15.5 12.433 15.5 10.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M18 20C18 16.6863 15.3137 14 12 14C8.68629 14 6 16.6863 6 20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
-            <span>Profile</span>
-            <span class="sidebar-badge">1</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="sidebar-item-link">
+          <a href="{{ route('tyro-dashboard.business') }}" class="sidebar-item-link {{ request()->routeIs('tyro-dashboard.business') ? 'active' : '' }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><path d="M3.50002 10V15C3.50002 17.8284 3.50002 19.2426 4.37869 20.1213C5.25737 21 6.67159 21 9.50002 21H14.5C17.3284 21 18.7427 21 19.6213 20.1213C20.5 19.2426 20.5 17.8284 20.5 15V10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M17 7.50184C17 8.88255 15.8807 9.99997 14.5 9.99997C13.1193 9.99997 12 8.88068 12 7.49997C12 8.88068 10.8807 9.99997 9.50002 9.99997C8.1193 9.99997 7.00002 8.88068 7.00002 7.49997C7.00002 8.88068 5.82655 9.99997 4.37901 9.99997C3.59984 9.99997 2.90008 9.67567 2.42 9.16087C1.59462 8.2758 2.12561 6.97403 2.81448 5.98842L3.20202 5.45851C4.08386 4.2527 4.52478 3.6498 5.16493 3.32494C5.80508 3.00008 6.55201 3.00018 8.04587 3.00038L15.9551 3.00143C17.4485 3.00163 18.1952 3.00173 18.8351 3.32658C19.475 3.65143 19.9158 4.25414 20.7974 5.45957L21.1855 5.99029C21.8744 6.97589 22.4054 8.27766 21.58 9.16273C21.0999 9.67754 20.4002 10.0018 19.621 10.0018C18.1734 10.0018 17 8.88255 17 7.50184Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M14.9971 17C14.3133 17.6072 13.2247 18 11.9985 18C10.7723 18 9.68376 17.6072 9 17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
             <span>Business</span>
             <span class="sidebar-badge">1</span>
           </a>
         </li>
         <li>
-          <a href="#" class="sidebar-item-link">
+          <a href="{{ route('tyro-dashboard.support') }}" class="sidebar-item-link {{ request()->routeIs('tyro-dashboard.support') ? 'active' : '' }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></circle><path d="M9.5 9.5C9.5 8.11929 10.6193 7 12 7C13.3807 7 14.5 8.11929 14.5 9.5C14.5 10.3569 14.0689 11.1131 13.4117 11.5636C12.7283 12.0319 12 12.6716 12 13.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path><path d="M12.0001 17H12.009" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
             <span>Support</span>
           </a>

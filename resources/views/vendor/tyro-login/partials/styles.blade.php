@@ -13,12 +13,32 @@
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
         background-color: var(--background);
+        background-image: url('/backgrounds.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
         min-height: 100vh;
         line-height: 1.6;
         color: var(--foreground);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.4);
+        z-index: -1;
+    }
+
+    html.dark body::before {
+        background: rgba(0, 0, 0, 0.6);
     }
 
     /* Auth Container */
@@ -484,8 +504,10 @@
     }
 
     .logo-container img {
-        height: {{ $branding['logo_height'] ?? '48px' }};
+        height: {{ $branding['logo_height'] ?? '120px' }};
         width: auto;
+        max-width: 100%;
+        object-fit: contain;
     }
 
     .logo-container .app-logo {

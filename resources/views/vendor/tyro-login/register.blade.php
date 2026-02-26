@@ -1,5 +1,6 @@
 @extends('tyro-login::layouts.auth')
 
+@section('title', 'Register')
 @section('content')
 <div class="auth-container two-col">
     <div class="auth-grid">
@@ -121,7 +122,7 @@
                     <div class="checkbox-group">
                         <input type="checkbox" id="terms" name="terms" class="checkbox-input" {{ old('terms') ? 'checked' : '' }} required>
                         <label for="terms" class="checkbox-label">
-                            I agree to the <a href="#" class="form-link">terms of service</a> and <a href="#" class="form-link">privacy policy</a>
+                            I agree to the <a href="{{ route('terms') }}" target="_blank" class="form-link">terms of service</a> and <a href="{{ route('privacy') }}" target="_blank" class="form-link">privacy policy</a>
                         </label>
                     </div>
                     @error('terms')

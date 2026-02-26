@@ -51,6 +51,56 @@
                 </div>
 
                 <div style="padding: 0.25rem;">
+                    @php
+                        $authUser = auth()->user();
+                        $isAdminUser = false;
+                        if ($authUser) {
+                            $adminRoles = config('tyro-dashboard.admin_roles', ['admin', 'super-admin']);
+                            if (method_exists($authUser, 'tyroRoleSlugs')) {
+                                $userRoles = $authUser->tyroRoleSlugs();
+                                foreach ($adminRoles as $role) {
+                                    if (in_array($role, $userRoles)) {
+                                        $isAdminUser = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!$isAdminUser && method_exists($authUser, 'isAdmin')) {
+                                $isAdminUser = (bool) $authUser->isAdmin();
+                            }
+                        }
+                        $viewMode = session('tyro_dashboard_view_mode');
+                    @endphp
+
+                    @if($isAdminUser)
+                        @if($viewMode === 'user')
+                            <form action="{{ route('tyro-dashboard.mode.admin') }}" method="POST" style="margin: 0;">
+                                @csrf
+                                <button type="submit" class="dropdown-item" style="width: 100%; border: none; background: none; display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s; cursor: pointer;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 8l-4 4 4 4" />
+                                    </svg>
+                                    Back to admin
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('tyro-dashboard.mode.user') }}" method="POST" style="margin: 0;">
+                                @csrf
+                                <button type="submit" class="dropdown-item" style="width: 100%; border: none; background: none; display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s; cursor: pointer;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+                                        <circle cx="9" cy="7" r="4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 00-3-3.87" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 3.13a4 4 0 010 7.75" />
+                                    </svg>
+                                    View as user
+                                </button>
+                            </form>
+                        @endif
+                    @endif
+
                     <a href="{{ route('tyro-dashboard.profile') }}" class="dropdown-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; color: #374151; font-size: 0.875rem; transition: background 0.2s;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

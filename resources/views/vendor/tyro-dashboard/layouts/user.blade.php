@@ -20,8 +20,33 @@
 <body>
     @include('tyro-dashboard::partials.admin-bar')
     <div class="dashboard-layout">
-        <!-- User Sidebar -->
-        @include('tyro-dashboard::partials.user-sidebar')
+        @php
+            $authUser = auth()->user();
+            $isAdminUser = false;
+            if ($authUser) {
+                $adminRoles = config('tyro-dashboard.admin_roles', ['admin', 'super-admin']);
+                if (method_exists($authUser, 'tyroRoleSlugs')) {
+                    $userRoles = $authUser->tyroRoleSlugs();
+                    foreach ($adminRoles as $role) {
+                        if (in_array($role, $userRoles)) {
+                            $isAdminUser = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!$isAdminUser && method_exists($authUser, 'isAdmin')) {
+                    $isAdminUser = (bool) $authUser->isAdmin();
+                }
+            }
+            $viewMode = session('tyro_dashboard_view_mode');
+        @endphp
+
+        @if($isAdminUser && $viewMode !== 'user')
+            @include('tyro-dashboard::partials.admin-sidebar')
+        @else
+            @include('tyro-dashboard::partials.user-sidebar')
+        @endif
 
         <!-- Main Content -->
         <div class="main-content">

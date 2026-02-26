@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="color-scheme" content="light dark">
 
-    <title>{{ $branding['app_name'] ?? config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Welcome') - {{ $branding['app_name'] ?? config('app.name', 'SalamaPay') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
