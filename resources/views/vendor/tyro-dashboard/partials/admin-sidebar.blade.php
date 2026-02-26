@@ -54,10 +54,24 @@
               </a>
           </li>
           <li>
-              <a href="{{ route('tyro-dashboard.transactions') }}" class="sidebar-item-link {{ request()->routeIs('tyro-dashboard.transactions') ? 'active' : '' }}">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><path d="M3 6.5C3 4.61438 3 3.67157 3.58579 3.08579C4.17157 2.5 5.11438 2.5 7 2.5H17C18.8856 2.5 19.8284 2.5 20.4142 3.08579C21 3.67157 21 4.61438 21 6.5V17.5C21 19.3856 21 20.3284 20.4142 20.9142C19.8284 21.5 18.8856 21.5 17 21.5H7C5.11438 21.5 4.17157 21.5 3.58579 20.9142C3 20.3284 3 19.3856 3 17.5V6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path><path d="M7 7H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M7 12H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M7 17H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-                  <span>Transactions</span>
+              <a href="{{ route('tyro-dashboard.admin.settings.index') }}" class="sidebar-item-link {{ request()->routeIs('tyro-dashboard.admin.settings.*') ? 'active' : '' }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="currentColor"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>System Settings</span>
               </a>
+              <ul class="sidebar-submenu pl-8 mt-1 space-y-1">
+                  <li>
+                      <a href="{{ route('tyro-dashboard.admin.settings.index') }}" class="text-xs font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-2 py-1">
+                          <span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                          General Settings
+                      </a>
+                  </li>
+                  <li>
+                      <a href="{{ route('tyro-dashboard.admin.settings.index') }}#mail" class="text-xs font-medium text-slate-500 hover:text-indigo-600 flex items-center gap-2 py-1">
+                          <span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                          Mail Config
+                      </a>
+                  </li>
+              </ul>
           </li>
           <li>
               <button type="button" class="sidebar-dropdown-btn {{ $paymentsOpen ? 'open' : '' }}" onclick="toggleDropdown('dropdown-payments')">
