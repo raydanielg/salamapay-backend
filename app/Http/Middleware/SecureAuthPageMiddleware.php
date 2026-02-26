@@ -3,7 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\AuthPageDeviceKey;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 class SecureAuthPageMiddleware
@@ -13,20 +17,75 @@ class SecureAuthPageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $configKey = config('tyro-login.page_key', 'change-me-please');
+        $cookieName = 'auth_page_device_key';
+        $masterKey = env('AUTH_PAGE_KEY');
 
-        // Ikiwa kuna key kwenye URL, iweke kwenye session na redirect ili kuifuta kwenye URL
-        if ($request->has('key') && $request->query('key') === $configKey) {
+        if (!is_string($masterKey) || $masterKey === '') {
+            return $next($request);
+        }
+
+        if (!$request->isMethod('get')) {
+            return $next($request);
+        }
+
+        if (session('auth_page_access') === true) {
+            return $next($request);
+        }
+
+        $cookieToken = $request->cookie($cookieName);
+        if (is_string($cookieToken) && $cookieToken !== '') {
+            $cookieHash = hash('sha256', $cookieToken);
+            $key = AuthPageDeviceKey::query()
+                ->where('token_hash', $cookieHash)
+                ->where('revoked', false)
+                ->where(function ($q) {
+                    $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
+                })
+                ->first();
+
+            if ($key) {
+                $key->forceFill(['last_used_at' => now()])->save();
+                session(['auth_page_access' => true]);
+                return $next($request);
+            }
+        }
+
+        $provided = $request->query('key');
+        if (is_string($provided) && $provided !== '' && hash_equals($masterKey, $provided)) {
+            $plainToken = Str::random(64);
+            $tokenHash = hash('sha256', $plainToken);
+
+            $ttlDays = (int) env('AUTH_PAGE_DEVICE_KEY_TTL_DAYS', 30);
+            $expiresAt = CarbonImmutable::now()->addDays(max(1, $ttlDays));
+
+            AuthPageDeviceKey::create([
+                'user_id' => auth()->check() ? auth()->id() : null,
+                'token_hash' => $tokenHash,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'last_used_at' => now(),
+                'expires_at' => $expiresAt,
+                'revoked' => false,
+            ]);
+
+            Cookie::queue(
+                Cookie::make(
+                    $cookieName,
+                    $plainToken,
+                    $expiresAt->diffInMinutes(CarbonImmutable::now()),
+                    '/',
+                    null,
+                    $request->isSecure(),
+                    true,
+                    false,
+                    'Lax'
+                )
+            );
+
             session(['auth_page_access' => true]);
             return redirect($request->fullUrlWithQuery(['key' => null]));
         }
 
-        // Ruhusu kama session ipo au kama ombi si la GET (mfano login POST)
-        if (session('auth_page_access') === true || !$request->isMethod('get')) {
-            return $next($request);
-        }
-
-        // Ikiwa haina access, toa 403 Forbidden
         abort(403, 'Unauthorized access to authentication pages.');
     }
 }
